@@ -42,7 +42,7 @@ const styles = {
 
 const Box = posed.div({
   [AnimationStatus.ENTER]: {
-    transform: 'rotateY(0deg)',
+    rotateY: 0,
     opacity: 1,
     scale: 0.01,
     transition: {
@@ -50,7 +50,7 @@ const Box = posed.div({
     },
   },
   [AnimationStatus.EXIT]: {
-    transform: 'rotateY(0deg)',
+    rotateY: 0,
     opacity: 0,
     scale: 2,
     transition: {
@@ -58,7 +58,7 @@ const Box = posed.div({
     },
   },
   [AnimationStatus.SHOW_ORIGINAL]: {
-    transform: 'rotateY(0deg)',
+    rotateY: 0,
     scale: 1,
     opacity: 1,
     transition: {
@@ -66,7 +66,7 @@ const Box = posed.div({
     },
   },
   [AnimationStatus.HIDE_ORIGINAL]: {
-    transform: 'rotateY(90deg)',
+    rotateY: 90,
     opacity: 1,
     scale: 1,
     transition: {
@@ -75,7 +75,7 @@ const Box = posed.div({
     },
   },
   [AnimationStatus.SWAP]: {
-    transform: 'rotateY(-90deg)',
+    rotateY: -90,
     opacity: 1,
     scale: 1,
     transition: {
@@ -84,7 +84,7 @@ const Box = posed.div({
     },
   },
   [AnimationStatus.SHOW_ANSWER]: {
-    transform: 'rotateY(0deg)',
+    rotateY: 0,
     opacity: 1,
     scale: 1,
     transition: {
@@ -109,6 +109,7 @@ class DisplayCard extends React.Component {
   onPoseComplete = () => {
     this.setState(prevState => {
       const { animationStatus } = prevState;
+
       switch (animationStatus) {
         case AnimationStatus.ENTER:
           return { animationStatus: AnimationStatus.SHOW_ORIGINAL };
@@ -143,6 +144,7 @@ class DisplayCard extends React.Component {
   render() {
     const { classes, original, translation } = this.props;
     const { animationStatus } = this.state;
+    console.log(animationStatus);
     return (
       <Box
         className={classes.container}

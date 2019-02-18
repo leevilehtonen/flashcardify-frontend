@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import PredictPage from './pages/PredictPage';
 import CollectionsPage from './pages/CollectionsPage';
 import ExplorePage from './pages/ExplorePage';
+import NewPage from './pages/NewPage';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -23,6 +24,7 @@ const Content = ({ classes }) => (
     <div className={classes.toolbar} />
     <React.Fragment>
       <Route exact path="/" component={PredictPage} />
+      <Route path="/new" component={NewPage} />
       <Route path="/collections" component={CollectionsPage} />
       <Route path="/explore" component={ExplorePage} />
     </React.Fragment>
