@@ -8,26 +8,22 @@ import QuizCardMedia from '../../common/QuizCardMedia';
 const CollectionCard = ({ quiz: { id, title, description }, redirect }) => {
   const actions = [
     {
-      name: 'Start',
-      color: 'secondary',
+      name: 'Open',
+      color: 'primary',
+      variant: 'contained',
+      fullWidth: true,
       action: () => {
-        console.log('Start');
+        redirect(`/view/${id}`);
       },
     },
-    {
+    /*    {
       name: 'Edit',
       color: 'primary',
+      variant: 'text',
       action: () => {
         redirect(`/edit/${id}`);
       },
-    },
-    {
-      name: 'Delete',
-      color: 'primary',
-      action: () => {
-        console.log('Delete');
-      },
-    },
+    }, */
   ];
 
   return (

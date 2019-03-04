@@ -5,8 +5,15 @@ import CardActions from '@material-ui/core/CardActions';
 
 const QuizCardActions = ({ actions }) => (
   <CardActions>
-    {actions.map(({ name, color, action }, id) => (
-      <Button key={id} size="small" color={color} onClick={() => action()}>
+    {actions.map(({ name, color, action, variant, fullWidth }) => (
+      <Button
+        key={name}
+        size="small"
+        variant={variant || 'text'}
+        fullWidth={fullWidth}
+        color={color}
+        onClick={() => action()}
+      >
         {name}
       </Button>
     ))}
@@ -19,6 +26,8 @@ QuizCardActions.propTypes = {
       name: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
       action: PropTypes.func.isRequired,
+      variant: PropTypes.string,
+      fullWidth: PropTypes.bool,
     })
   ).isRequired,
 };

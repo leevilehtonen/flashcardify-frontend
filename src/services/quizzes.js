@@ -6,8 +6,12 @@ export const getQuizzes = async () => {
   const results = await axios.get(`${API_URL}`);
   return results.data;
 };
-export const getQuiz = async id => {
-  const result = await axios.get(`${API_URL}/${id}`);
+export const getQuiz = async (id, flashcards) => {
+  const result = await axios.get(`${API_URL}/${id}`, {
+    params: {
+      flashcards,
+    },
+  });
   return result.data;
 };
 export const createQuiz = async quiz => {

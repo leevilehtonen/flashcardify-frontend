@@ -1,63 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withSnackbar } from 'notistack';
-import { getQuiz, updateQuiz } from '../../../services/quizzes';
 import QuizForm from '../../common/QuizForm';
-import ProgressView from '../../common/ProgressView';
 
-const EditForm = ({ id, enqueueSnackbar, redirect }) => {
-  const [flashcards, setFlashcards] = useState([]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const EditForm = ({ quiz, saveQuiz }) => {
+  const [flashcards, setFlashcards] = useState(quiz.flashcards);
+  const [title, setTitle] = useState(quiz.title);
+  const [description, setDescription] = useState(quiz.description);
   const [saving, setSaving] = useState(false);
-  const [fetching, setFetching] = useState(true);
-
-  const fetchQuiz = async () => {
-    setFetching(true);
-    const result = await getQuiz(id);
-    setFlashcards(result.flashcards);
-    setTitle(result.title);
-    setDescription(result.description);
-    setFetching(false);
-  };
 
   const submitForm = async () => {
     setSaving(true);
-    const result = await updateQuiz(id, { title, description, flashcards });
+    await saveQuiz(quiz.id, { title, description, flashcards });
     setSaving(false);
-    enqueueSnackbar(`Quiz "${result.title}" updated`);
-    redirect('/collections');
   };
 
-  useEffect(() => {
-    fetchQuiz();
-  }, []);
-
   return (
-    <React.Fragment>
-      {fetching ? (
-        <ProgressView />
-      ) : (
-        <QuizForm
-          flashcards={flashcards}
-          title={title}
-          description={description}
-          setFlashcards={setFlashcards}
-          setTitle={setTitle}
-          setDescription={setDescription}
-          saving={saving}
-          submitText="Update"
-          submitHandler={submitForm}
-          cardTitle="Update a quiz"
-        />
-      )}
-    </React.Fragment>
+    <QuizForm
+      flashcards={flashcards}
+      title={title}
+      description={description}
+      setFlashcards={setFlashcards}
+      setTitle={setTitle}
+      setDescription={setDescription}
+      saving={saving}
+      submitText="Update"
+      submitHandler={submitForm}
+      cardTitle="Update a quiz"
+    />
   );
 };
 
 EditForm.propTypes = {
-  id: PropTypes.number.isRequired,
-  enqueueSnackbar: PropTypes.func.isRequired,
-  redirect: PropTypes.func.isRequired,
+  quiz: PropTypes.object.isRequired,
+  saveQuiz: PropTypes.func.isRequired,
 };
-export default withSnackbar(EditForm);
+export default EditForm;

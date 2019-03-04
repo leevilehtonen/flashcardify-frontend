@@ -8,6 +8,7 @@ import CollectionsPage from './pages/CollectionsPage';
 import ExplorePage from './pages/ExplorePage';
 import NewPage from './pages/NewPage';
 import EditPage from './pages/EditPage';
+import ViewPage from './pages/ViewPage';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -25,14 +26,14 @@ const styles = theme => ({
   },
   fadeEnterActive: {
     opacity: 1,
-    transition: 'opacity 300ms ease-in',
+    transition: 'opacity 1000ms ease-in',
   },
   fadeExit: {
     opacity: 1,
   },
   fadeExitActive: {
     opacity: 0,
-    transition: 'opacity 300ms ease-out',
+    transition: 'opacity 1000ms ease-out',
   },
 });
 
@@ -64,6 +65,7 @@ const Content = ({ location, classes }) => {
             <Route exact path="/new" component={NewPage} />
             <Route exact path="/collections" component={CollectionsPage} />
             <Route exact path="/explore" component={ExplorePage} />
+            <Route exact path="/view/:id" component={ViewPage} />
             <Route exact path="/edit/:id" component={EditPage} />
           </Switch>
         </CSSTransition>
