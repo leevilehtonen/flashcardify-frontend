@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withSnackbar } from 'notistack';
-import { CircularProgress, withStyles } from '@material-ui/core';
 import { getQuiz, updateQuiz } from '../../../services/quizzes';
 import QuizForm from '../../common/QuizForm';
+import ProgressView from '../../common/ProgressView';
 
-const styles = {
-  progressWrapper: {
-    position: 'relative',
-    top: '50%',
-    textAlign: 'center',
-    transform: 'translate(0, -50%)',
-  },
-};
-
-const EditForm = ({ id, enqueueSnackbar, redirect, classes }) => {
+const EditForm = ({ id, enqueueSnackbar, redirect }) => {
   const [flashcards, setFlashcards] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -45,9 +36,7 @@ const EditForm = ({ id, enqueueSnackbar, redirect, classes }) => {
   return (
     <React.Fragment>
       {fetching ? (
-        <div className={classes.progressWrapper}>
-          <CircularProgress />
-        </div>
+        <ProgressView />
       ) : (
         <QuizForm
           flashcards={flashcards}
@@ -70,6 +59,5 @@ EditForm.propTypes = {
   id: PropTypes.number.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   redirect: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(withSnackbar(EditForm));
+export default withSnackbar(EditForm);
