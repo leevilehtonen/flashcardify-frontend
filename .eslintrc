@@ -7,7 +7,7 @@
       "jsx": true
     }
   },
-  "plugins": ["prettier", "react"],
+  "plugins": ["prettier", "react", "react-hooks"],
   "extends": [
     "airbnb",
     "plugin:react/recommended",

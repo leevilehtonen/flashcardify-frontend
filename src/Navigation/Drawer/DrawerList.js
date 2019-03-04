@@ -16,7 +16,9 @@ const DrawerList = ({ items, location }) => (
         button
         key={item.text}
       >
-        <ListItemIcon>{item.icon}</ListItemIcon>
+        <ListItemIcon>
+          <item.icon />
+        </ListItemIcon>
         <ListItemText primary={item.text} />
       </ListItem>
     ))}
@@ -25,9 +27,10 @@ const DrawerList = ({ items, location }) => (
 DrawerList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      icon: PropTypes.element,
+      icon: PropTypes.func,
       text: PropTypes.string,
     })
   ).isRequired,
+  location: PropTypes.object.isRequired,
 };
 export default withRouter(DrawerList);

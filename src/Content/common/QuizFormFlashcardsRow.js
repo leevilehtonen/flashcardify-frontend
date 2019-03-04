@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ListItem, Grid, Collapse, Divider } from '@material-ui/core';
-import NewFormListRow from './NewFormListRow';
-import NewFormEditRow from './NewFormEditRow';
+import QuizFormFlashcardsListRow from './QuizFormFlashcardsListRow';
+import QuizFormFlashcardsEditRow from './QuizFormFlashcardsEditRow';
 
-const NewFormRow = ({ count, flashcard, handleSaveClick, handleDeleteClick }) => {
+const QuizFormFlashcardsRow = ({ count, flashcard, handleSaveClick, handleDeleteClick }) => {
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -20,9 +20,9 @@ const NewFormRow = ({ count, flashcard, handleSaveClick, handleDeleteClick }) =>
     <React.Fragment>
       <Collapse in={show} unmountOnExit>
         <ListItem>
-          <Grid container spacing={8} alignItems="center">
+          <Grid container spacing={1} alignItems="center">
             {edit ? (
-              <NewFormEditRow
+              <QuizFormFlashcardsEditRow
                 flashcard={flashcard}
                 handleSaveClick={newFlashcard => {
                   handleSaveClick(newFlashcard);
@@ -30,7 +30,7 @@ const NewFormRow = ({ count, flashcard, handleSaveClick, handleDeleteClick }) =>
                 }}
               />
             ) : (
-              <NewFormListRow
+              <QuizFormFlashcardsListRow
                 count={count}
                 flashcard={flashcard}
                 handleEditClick={() => {
@@ -38,19 +38,21 @@ const NewFormRow = ({ count, flashcard, handleSaveClick, handleDeleteClick }) =>
                 }}
                 handleDeleteClick={() => {
                   setShow(false);
-                  setTimeout(() => handleDeleteClick(), 300);
+                  setTimeout(() => {
+                    handleDeleteClick();
+                  }, 300);
                 }}
               />
             )}
           </Grid>
         </ListItem>
+        <Divider />
       </Collapse>
-      <Divider />
     </React.Fragment>
   );
 };
 
-NewFormRow.propTypes = {
+QuizFormFlashcardsRow.propTypes = {
   count: PropTypes.number.isRequired,
   flashcard: PropTypes.shape({
     question: PropTypes.string.isRequired,
@@ -60,4 +62,4 @@ NewFormRow.propTypes = {
   handleDeleteClick: PropTypes.func.isRequired,
 };
 
-export default NewFormRow;
+export default QuizFormFlashcardsRow;

@@ -26,7 +26,7 @@ const TitleBar = ({ classes, handleMobileDrawerToggle, mobileDrawerOpen }) => (
           <MenuIcon />
         </IconButton>
       </Hidden>
-      <Typography variant="title" color="inherit" noWrap>
+      <Typography variant="h6" color="inherit" noWrap>
         Flashcardify
       </Typography>
     </Toolbar>

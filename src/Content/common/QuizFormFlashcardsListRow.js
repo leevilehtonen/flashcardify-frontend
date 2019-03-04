@@ -17,7 +17,7 @@ const styles = () => ({
   },
 });
 
-const NewFormListRow = ({
+const QuizFormFlashcardsListRow = ({
   classes,
   count,
   flashcard: { question, answer },
@@ -30,12 +30,12 @@ const NewFormListRow = ({
         {count}
       </Typography>
     </Grid>
-    <Grid item xs={5} onDoubleClick={() => handleEditClick()}>
+    <Grid item xs={5} onDoubleClick={handleEditClick}>
       <Typography variant="body1" gutterBottom>
         {question}
       </Typography>
     </Grid>
-    <Grid item xs onDoubleClick={() => handleEditClick()}>
+    <Grid item xs onDoubleClick={handleEditClick}>
       <Typography variant="body1" gutterBottom>
         {answer}
       </Typography>
@@ -45,7 +45,7 @@ const NewFormListRow = ({
         color="secondary"
         className={classes.button}
         aria-label="Edit"
-        onClick={() => handleEditClick()}
+        onClick={handleEditClick}
       >
         <Edit fontSize="small" />
       </IconButton>
@@ -53,7 +53,7 @@ const NewFormListRow = ({
         color="primary"
         className={classes.button}
         aria-label="Delete"
-        onClick={() => handleDeleteClick()}
+        onClick={handleDeleteClick}
       >
         <Delete fontSize="small" />
       </IconButton>
@@ -61,7 +61,7 @@ const NewFormListRow = ({
   </React.Fragment>
 );
 
-NewFormListRow.propTypes = {
+QuizFormFlashcardsListRow.propTypes = {
   classes: PropTypes.object.isRequired,
   count: PropTypes.number.isRequired,
   flashcard: PropTypes.shape({
@@ -72,4 +72,4 @@ NewFormListRow.propTypes = {
   handleDeleteClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(NewFormListRow);
+export default withStyles(styles)(QuizFormFlashcardsListRow);

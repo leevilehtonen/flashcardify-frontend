@@ -7,12 +7,12 @@ const DrawerListBottom = () => (
   <DrawerList
     items={[
       {
-        icon: <HelpIcon />,
+        icon: HelpIcon,
         text: 'Help',
         to: '',
       },
       {
-        icon: <SettingsIcon />,
+        icon: SettingsIcon,
         text: 'Settings',
         to: '',
       },

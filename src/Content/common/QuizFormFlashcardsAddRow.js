@@ -17,7 +17,7 @@ const styles = () => ({
   },
 });
 
-const NewFormAddRow = ({ classes, handleAddClick }) => {
+const QuizFormFlashcardsAddRow = ({ classes, handleAddClick }) => {
   const [newQuestion, setNewQuestion] = useState('');
   const [newAnswer, setNewAnswer] = useState('');
   const questionInput = useRef(null);
@@ -33,7 +33,7 @@ const NewFormAddRow = ({ classes, handleAddClick }) => {
 
   return (
     <ListItem>
-      <Grid container spacing={16} alignItems="center">
+      <Grid container spacing={2} alignItems="center">
         <Grid item xs>
           <TextField
             id="outlined-dense"
@@ -76,9 +76,9 @@ const NewFormAddRow = ({ classes, handleAddClick }) => {
   );
 };
 
-NewFormAddRow.propTypes = {
+QuizFormFlashcardsAddRow.propTypes = {
   classes: PropTypes.object.isRequired,
   handleAddClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(NewFormAddRow);
+export default withStyles(styles)(QuizFormFlashcardsAddRow);

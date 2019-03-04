@@ -9,22 +9,22 @@ const DrawerListTop = () => (
   <DrawerList
     items={[
       {
-        icon: <DashboardIcon />,
-        text: 'Dashboard',
-        to: '',
+        icon: DashboardIcon,
+        text: 'Predict',
+        to: '/predict',
       },
       {
-        icon: <AddIcon />,
+        icon: AddIcon,
         text: 'New',
-        to: '',
+        to: '/new',
       },
       {
-        icon: <CollectionsIcon />,
+        icon: CollectionsIcon,
         text: 'Collections',
         to: '/collections',
       },
       {
-        icon: <ExploreIcon />,
+        icon: ExploreIcon,
         text: 'Explore',
         to: '/explore',
       },

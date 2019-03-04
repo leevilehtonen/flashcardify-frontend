@@ -12,13 +12,9 @@ import AnimationStatus from './AnimationStatus';
 
 const styles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'center',
     marginBottom: 'auto',
-    marginTop: 'auto',
     width: '70vmin',
-    height: '70vmin',
+    height: '65vmin',
   },
   card: {
     display: 'flex',
@@ -142,9 +138,11 @@ class DisplayCard extends React.Component {
   }
 
   render() {
-    const { classes, original, translation } = this.props;
+    const {
+      classes,
+      flashcard: { original, translation },
+    } = this.props;
     const { animationStatus } = this.state;
-    console.log(animationStatus);
     return (
       <Box
         className={classes.container}
@@ -157,7 +155,7 @@ class DisplayCard extends React.Component {
           })}
         >
           <CardContent className={classes.cardContent}>
-            <Typography className={classes.text} variant="headline" align="center" gutterBottom>
+            <Typography className={classes.text} variant="h5" align="center" gutterBottom>
               {animationStatus === AnimationStatus.SHOW_ANSWER ? translation : ''}
               {animationStatus === AnimationStatus.ENTER ||
               animationStatus === AnimationStatus.SHOW_ORIGINAL
@@ -173,8 +171,10 @@ class DisplayCard extends React.Component {
 
 DisplayCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  original: PropTypes.string.isRequired,
-  translation: PropTypes.string.isRequired,
+  flashcard: PropTypes.shape({
+    original: PropTypes.string.isRequired,
+    translation: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(styles)(DisplayCard);

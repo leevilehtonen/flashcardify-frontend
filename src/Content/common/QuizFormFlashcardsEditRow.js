@@ -12,7 +12,11 @@ const styles = () => ({
   },
 });
 
-const NewFormEditRow = ({ classes, flashcard: { question, answer }, handleSaveClick }) => {
+const QuizFormFlashcardsEditRow = ({
+  classes,
+  flashcard: { question, answer },
+  handleSaveClick,
+}) => {
   const [newQuestion, setNewQuestion] = useState(question);
   const [newAnswer, setNewAnswer] = useState(answer);
 
@@ -64,7 +68,7 @@ const NewFormEditRow = ({ classes, flashcard: { question, answer }, handleSaveCl
   );
 };
 
-NewFormEditRow.propTypes = {
+QuizFormFlashcardsEditRow.propTypes = {
   classes: PropTypes.object.isRequired,
   flashcard: PropTypes.shape({
     question: PropTypes.string.isRequired,
@@ -73,4 +77,4 @@ NewFormEditRow.propTypes = {
   handleSaveClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(NewFormEditRow);
+export default withStyles(styles)(QuizFormFlashcardsEditRow);

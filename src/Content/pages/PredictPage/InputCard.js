@@ -11,8 +11,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'center',
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 10,
+    marginTop: 'auto',
+    marginBottom: theme.spacing(3),
     width: '70vmin',
   },
   cardContent: {
@@ -26,7 +26,7 @@ const styles = theme => ({
     '&:after': {
       borderBottomColor: theme.palette.secondary.main,
     },
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing(1),
   },
   textFieldRawInput: {
     textAlign: 'center',
@@ -35,11 +35,11 @@ const styles = theme => ({
     marginTop: 'auto',
   },
   button: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     width: '100%',
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
   },
 });
 

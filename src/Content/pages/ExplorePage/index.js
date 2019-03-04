@@ -26,7 +26,7 @@ class ExplorePage extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Grid container justify="flex-start" spacing={24}>
+        <Grid container justify="flex-start" spacing={3}>
           {quizzes.map(quiz => (
             <Grid key={quiz.id} item xs={12} sm={6} lg={4} xl={3}>
               <ExploreCard quiz={quiz} />

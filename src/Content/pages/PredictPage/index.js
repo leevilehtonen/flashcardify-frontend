@@ -1,54 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
 import DisplayCard from './DisplayCard';
 import InputCard from './InputCard';
 import mockData from '../../../flashcards.json';
 import PredictionStatus from './PredictionStatus';
 
-class PredictPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      predictionStatus: PredictionStatus.ORIGINAL,
-      translationId: 0,
-      data: mockData,
-    };
-  }
+const styles = {
+  root: {
+    display: 'flex',
+    flexGrow: 1,
+    flexDirection: 'column',
+  },
+};
 
-  componentDidMount() {
-    setInterval(() => {
-      this.forwardPredictionStatus();
-    }, 5000);
-  }
+const PredictPage = ({ classes }) => {
+  const [predictionStatus, setPredictionStatus] = useState(PredictionStatus.ORIGINAL);
+  const [flashcardId, setFlashcardId] = useState(0);
+  const [data] = useState(mockData);
 
-  forwardPredictionStatus = () => {
-    this.setState(previousState => {
-      switch (previousState.predictionStatus) {
-        case PredictionStatus.ORIGINAL:
-          return { predictionStatus: PredictionStatus.ANSWER };
-        case PredictionStatus.ANSWER:
-          return {
-            predictionStatus: PredictionStatus.ORIGINAL,
-            translationId: previousState.translationId + 1,
-          };
-        default:
-          return {};
+  const forwardPredictionStatus = () => {
+    setPredictionStatus(prevPredictionStatus => {
+      if (prevPredictionStatus === PredictionStatus.ORIGINAL) {
+        return PredictionStatus.ANSWER;
       }
+      setFlashcardId(prevFlashcardId => prevFlashcardId + 1);
+      return PredictionStatus.ORIGINAL;
     });
   };
 
-  render() {
-    const { predictionStatus, translationId, data } = this.state;
-    return (
-      <React.Fragment>
-        <DisplayCard
-          predictionStatus={predictionStatus}
-          original={data[translationId].original}
-          translation={data[translationId].translation}
-        />
-        <InputCard />
-      </React.Fragment>
-    );
-  }
-}
+  useEffect(() => {
+    const pred = setInterval(() => forwardPredictionStatus(predictionStatus), 5000);
+    return () => {
+      window.clearInterval(pred);
+    };
+  }, []);
 
-export default PredictPage;
+  return (
+    <div className={classes.root}>
+      <DisplayCard predictionStatus={predictionStatus} flashcard={data[flashcardId]} />
+      <InputCard />
+    </div>
+  );
+};
+
+PredictPage.propTypes = { classes: PropTypes.object.isRequired };
+
+export default withStyles(styles)(PredictPage);
