@@ -4,11 +4,15 @@ import { withStyles } from '@material-ui/core';
 import ExploreCard from './ExploreCard';
 import mockData from '../../../quizzes.json';
 
-const styles = {
+const styles = theme => ({
   root: {
-    flexGrow: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    margin: theme.spacing(3),
   },
-};
+});
 
 class ExplorePage extends React.Component {
   constructor(props) {

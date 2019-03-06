@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, CardContent, Typography, Divider } from '@material-ui/core';
+import { withStyles, CardContent, Typography, Divider, Collapse } from '@material-ui/core';
 import ViewFlashcardsList from './ViewFlashcardsList';
 
 const styles = theme => ({
@@ -12,6 +12,12 @@ const styles = theme => ({
 });
 
 const ViewFlashcards = ({ classes, flashcards }) => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setShow(true);
+  }, []);
+
   return (
     <div className={classes.root}>
       <CardContent>
@@ -22,7 +28,9 @@ const ViewFlashcards = ({ classes, flashcards }) => {
           Below is the list of all flashcards included in this quiz.
         </Typography>
         <Divider className={classes.divider} />
-        <ViewFlashcardsList flashcards={flashcards} />
+        <Collapse in={show} timeout={1000}>
+          <ViewFlashcardsList flashcards={flashcards} />
+        </Collapse>
       </CardContent>
     </div>
   );

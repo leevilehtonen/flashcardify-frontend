@@ -6,12 +6,15 @@ import EditForm from './EditForm';
 import { getQuiz, updateQuiz } from '../../../services/quizzes';
 import ProgressView from '../../common/ProgressView';
 
-const styles = {
+const styles = theme => ({
   root: {
-    width: '100%',
-    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    margin: theme.spacing(3),
   },
-};
+});
 const EditPage = ({ classes, history, match, enqueueSnackbar }) => {
   const [fetching, setFetching] = useState(true);
   const [quiz, setQuiz] = useState({});
@@ -35,9 +38,13 @@ const EditPage = ({ classes, history, match, enqueueSnackbar }) => {
     fetchQuiz();
   }, []);
 
+  if (fetching) {
+    return <ProgressView />;
+  }
+
   return (
     <div className={classes.root}>
-      {fetching ? <ProgressView /> : <EditForm saveQuiz={saveQuiz} quiz={quiz} />}
+      <EditForm saveQuiz={saveQuiz} quiz={quiz} />
     </div>
   );
 };

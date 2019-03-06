@@ -8,11 +8,8 @@ import { withStyles, Button } from '@material-ui/core';
 
 const styles = theme => ({
   card: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'center',
+    marginBottom: 'auto',
     marginTop: 'auto',
-    marginBottom: theme.spacing(3),
     width: '70vmin',
   },
   cardContent: {
@@ -43,7 +40,7 @@ const styles = theme => ({
   },
 });
 
-const InputCard = ({ classes }) => (
+const InputCard = ({ classes, input, setInput, submit, buttonText }) => (
   <Card className={classes.card}>
     <CardContent className={classes.cardContent}>
       <TextField
@@ -53,11 +50,18 @@ const InputCard = ({ classes }) => (
         }}
         className={classes.textField}
         rowsMax={2}
+        value={input}
+        onChange={e => setInput(e.target.value)}
         multiline
         fullWidth
       />
-      <Button variant="contained" color="secondary" className={classes.button}>
-        Predict
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.button}
+        onClick={() => submit()}
+      >
+        {buttonText}
         <SendIcon className={classes.rightIcon} />
       </Button>
     </CardContent>

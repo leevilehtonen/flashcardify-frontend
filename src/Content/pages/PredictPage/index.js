@@ -5,21 +5,30 @@ import DisplayCard from './DisplayCard';
 import InputCard from './InputCard';
 import mockData from '../../../flashcards.json';
 import PredictionStatus from './PredictionStatus';
+import { getQuiz } from '../../../services/quizzes';
 
-const styles = {
+const styles = theme => ({
   root: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: theme.spacing(3),
     display: 'flex',
-    flexGrow: 1,
     flexDirection: 'column',
+    alignItems: 'center',
   },
-};
+});
 
-const PredictPage = ({ classes }) => {
+const PredictPage = ({ classes, match }) => {
   const [predictionStatus, setPredictionStatus] = useState(PredictionStatus.ORIGINAL);
   const [flashcardId, setFlashcardId] = useState(0);
-  const [data] = useState(mockData);
+  const [data, setData] = useState([]);
+  const [correct, setCorrect] = useState(true);
+  const [input, setInput] = useState('');
 
-  const forwardPredictionStatus = () => {
+  const proceed = () => {
     setPredictionStatus(prevPredictionStatus => {
       if (prevPredictionStatus === PredictionStatus.ORIGINAL) {
         return PredictionStatus.ANSWER;
@@ -29,17 +38,25 @@ const PredictPage = ({ classes }) => {
     });
   };
 
+  const fetchQuiz = async () => {
+    const result = await getQuiz(match.params.id, true);
+    setData(result.flashcards);
+  };
+
   useEffect(() => {
-    const pred = setInterval(() => forwardPredictionStatus(predictionStatus), 5000);
-    return () => {
-      window.clearInterval(pred);
-    };
+    fetchQuiz();
   }, []);
 
   return (
     <div className={classes.root}>
-      <DisplayCard predictionStatus={predictionStatus} flashcard={data[flashcardId]} />
-      <InputCard />
+      {data.length > 0 && (
+        <DisplayCard
+          predictionStatus={predictionStatus}
+          correct={correct}
+          flashcard={data[flashcardId]}
+        />
+      )}
+      <InputCard input={input} setInput={setInput} submit={proceed} buttonText="Proceed" />
     </div>
   );
 };

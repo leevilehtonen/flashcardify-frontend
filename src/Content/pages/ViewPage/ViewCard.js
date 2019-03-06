@@ -11,10 +11,14 @@ import ProgressView from '../../common/ProgressView';
 const styles = theme => ({
   root: {
     width: '70vmin',
-    overflow: 'visible',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   description: {
     marginTop: theme.spacing(2),
+  },
+  progress: {
+    textAlign: 'center',
   },
 });
 const ViewCard = ({ classes, quiz, fetchFlashcards, navigate }) => {
@@ -55,7 +59,12 @@ const ViewCard = ({ classes, quiz, fetchFlashcards, navigate }) => {
       />
       <Collapse in={expanded}>
         <Divider />
-        {fetching ? <ProgressView /> : <ViewFlashcards flashcards={quiz.flashcards} />}
+        {fetching && (
+          <div className={classes.progress}>
+            <ProgressView page={false} />
+          </div>
+        )}
+        {!fetching && <ViewFlashcards flashcards={quiz.flashcards} />}
       </Collapse>
     </Card>
   );

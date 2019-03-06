@@ -13,6 +13,7 @@ import AnimationStatus from './AnimationStatus';
 const styles = {
   container: {
     marginBottom: 'auto',
+    marginTop: 'auto',
     width: '70vmin',
     height: '65vmin',
   },
@@ -140,7 +141,7 @@ class DisplayCard extends React.Component {
   render() {
     const {
       classes,
-      flashcard: { original, translation },
+      flashcard: { question, answer },
     } = this.props;
     const { animationStatus } = this.state;
     return (
@@ -156,10 +157,10 @@ class DisplayCard extends React.Component {
         >
           <CardContent className={classes.cardContent}>
             <Typography className={classes.text} variant="h5" align="center" gutterBottom>
-              {animationStatus === AnimationStatus.SHOW_ANSWER ? translation : ''}
+              {animationStatus === AnimationStatus.SHOW_ANSWER ? answer : ''}
               {animationStatus === AnimationStatus.ENTER ||
               animationStatus === AnimationStatus.SHOW_ORIGINAL
-                ? original
+                ? question
                 : ''}
             </Typography>
           </CardContent>

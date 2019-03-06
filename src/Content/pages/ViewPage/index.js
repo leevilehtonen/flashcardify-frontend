@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
 import { getQuiz } from '../../../services/quizzes';
 import ViewCard from './ViewCard';
 import ProgressView from '../../common/ProgressView';
 
-const ViewPage = ({ history, match }) => {
+const styles = theme => ({
+  root: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    margin: theme.spacing(3),
+  },
+});
+
+const ViewPage = ({ history, match, classes }) => {
   const [fetching, setFetching] = useState(true);
   const [quiz, setQuiz] = useState({});
 
@@ -23,19 +34,19 @@ const ViewPage = ({ history, match }) => {
     fetchQuiz(false);
   }, []);
 
+  if (fetching) {
+    return <ProgressView />;
+  }
   return (
-    <div>
-      {fetching ? (
-        <ProgressView />
-      ) : (
-        <ViewCard quiz={quiz} fetchFlashcards={() => fetchQuiz(true)} navigate={navigate} />
-      )}
+    <div className={classes.root}>
+      <ViewCard quiz={quiz} fetchFlashcards={() => fetchQuiz(true)} navigate={navigate} />
     </div>
   );
 };
 ViewPage.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default ViewPage;
+export default withStyles(styles)(ViewPage);

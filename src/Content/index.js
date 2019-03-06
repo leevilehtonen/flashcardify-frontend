@@ -9,31 +9,36 @@ import ExplorePage from './pages/ExplorePage';
 import NewPage from './pages/NewPage';
 import EditPage from './pages/EditPage';
 import ViewPage from './pages/ViewPage';
+import TestPage from './pages/TestPage';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
-    overflow: 'auto',
-    display: 'flex',
-    flexGrow: 1,
-    flexDirection: 'column',
-    padding: theme.spacing(3),
-    alignItems: 'center',
+    width: '100%',
     height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  wrapper: {
+    position: 'relative',
+    width: '100%',
+    overflow: 'auto',
+    flexGrow: 1,
   },
   fadeEnter: {
     opacity: 0.01,
+    zIndex: 1,
   },
   fadeEnterActive: {
     opacity: 1,
-    transition: 'opacity 1000ms ease-in',
+    transition: 'opacity 300ms ease-in',
   },
   fadeExit: {
     opacity: 1,
   },
   fadeExitActive: {
     opacity: 0,
-    transition: 'opacity 1000ms ease-out',
+    transition: 'opacity 300ms ease-out',
   },
 });
 
@@ -47,29 +52,32 @@ const Content = ({ location, classes }) => {
   return (
     <main ref={content} className={classes.content}>
       <div className={classes.toolbar} />
-      <TransitionGroup component={null}>
-        <CSSTransition
-          key={location.pathname}
-          timeout={300}
-          classNames={{
-            enter: classes.fadeEnter,
-            enterActive: classes.fadeEnterActive,
-            exit: classes.fadeExit,
-            exitActive: classes.fadeExitActive,
-          }}
-          unmountOnExit
-          mountOnEnter
-        >
-          <Switch location={location}>
-            <Route exact path="/predict" component={PredictPage} />
-            <Route exact path="/new" component={NewPage} />
-            <Route exact path="/collections" component={CollectionsPage} />
-            <Route exact path="/explore" component={ExplorePage} />
-            <Route exact path="/view/:id" component={ViewPage} />
-            <Route exact path="/edit/:id" component={EditPage} />
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
+      <div className={classes.wrapper}>
+        <TransitionGroup component={null}>
+          <CSSTransition
+            key={location.key}
+            timeout={300}
+            classNames={{
+              enter: classes.fadeEnter,
+              enterActive: classes.fadeEnterActive,
+              exit: classes.fadeExit,
+              exitActive: classes.fadeExitActive,
+            }}
+            unmountOnExit
+            mountOnEnter
+          >
+            <Switch location={location}>
+              <Route exact path="/predict/:id" component={PredictPage} />
+              <Route exact path="/new" component={NewPage} />
+              <Route exact path="/collections" component={CollectionsPage} />
+              <Route exact path="/explore" component={ExplorePage} />
+              <Route exact path="/view/:id" component={ViewPage} />
+              <Route exact path="/edit/:id" component={EditPage} />
+              <Route exact path="/test" component={TestPage} />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
+      </div>
     </main>
   );
 };

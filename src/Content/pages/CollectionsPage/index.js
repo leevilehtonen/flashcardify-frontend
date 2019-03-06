@@ -4,19 +4,26 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core';
 import CollectionCard from './CollectionCard';
 import { getQuizzes } from '../../../services/quizzes';
+import ProgressView from '../../common/ProgressView';
 
-const styles = {
+const styles = theme => ({
   root: {
-    flexGrow: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    margin: theme.spacing(3),
   },
-};
+});
 
 const CollectionsPage = ({ classes, history }) => {
   const [quizzes, setQuizzes] = useState([]);
+  const [fetching, setFetching] = useState(true);
 
   const fetchQuizzes = async () => {
     const results = await getQuizzes();
     setQuizzes(results);
+    setFetching(false);
   };
 
   const redirect = path => {
@@ -25,6 +32,10 @@ const CollectionsPage = ({ classes, history }) => {
   useEffect(() => {
     fetchQuizzes();
   }, []);
+
+  if (fetching) {
+    return <ProgressView />;
+  }
 
   return (
     <div className={classes.root}>
@@ -35,6 +46,7 @@ const CollectionsPage = ({ classes, history }) => {
           </Grid>
         ))}
       </Grid>
+      )
     </div>
   );
 };
