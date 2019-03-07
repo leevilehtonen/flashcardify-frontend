@@ -1,32 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
-import NewForm from './NewForm';
+import { Fade, Grow } from '@material-ui/core';
+import NewPageContent from './NewPageContent';
+import FadeWrapperPage from '../../FadeWrapperPage';
 
-const styles = theme => ({
-  root: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    margin: theme.spacing(3),
-  },
-});
-
-const NewPage = ({ classes, history }) => {
-  const redirect = path => {
-    history.push(path);
-  };
+const NewPage = ({ history }) => {
+  const [fetching, setFetching] = useState(false);
 
   return (
-    <div className={classes.root}>
-      <NewForm redirect={redirect} />
-    </div>
+    <FadeWrapperPage
+      Component={NewPageContent}
+      ProgressTransition={Fade}
+      ContentTransition={Grow}
+      fetching={fetching}
+      setFetching={setFetching}
+      timeout={300}
+      redirect={path => history.push(path)}
+    />
   );
 };
 
 NewPage.propTypes = {
-  classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(NewPage);
+export default NewPage;

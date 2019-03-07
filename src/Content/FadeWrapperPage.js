@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Fade, withStyles } from '@material-ui/core';
+import { withStyles, CircularProgress } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -10,11 +10,38 @@ const styles = theme => ({
     left: 0,
     right: 0,
   },
-  progressWrapper: {},
-  contentWrapper: {},
+  progressWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  contentComponentWrapper: {
+    margin: theme.spacing(3),
+  },
 });
 
-const FadeWrapperPage = ({ classes, fetching, timeout }) => {
+const FadeWrapperPage = ({
+  classes,
+  fetching,
+  timeout,
+  ProgressTransition,
+  ContentTransition,
+  Component,
+  ...props
+}) => {
   const [progressVisible, setProgressVisible] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
 
@@ -34,24 +61,29 @@ const FadeWrapperPage = ({ classes, fetching, timeout }) => {
 
   return (
     <div className={classes.root}>
-      {progressVisible && (
-        <div className={classes.progressWrapper}>
-          <Fade in={progressVisible} timeout={timeout}>
-            <p>Hello</p>
-          </Fade>
-        </div>
-      )}
-      {contentVisible && (
-        <div className={classes.contentWrapper}>
-          <Fade in={contentVisible} timeout={timeout}>
-            <p>World</p>
-          </Fade>
-        </div>
-      )}
+      <div className={classes.progressWrapper}>
+        <ProgressTransition in={progressVisible} mountOnEnter unmountOnExit timeout={timeout}>
+          <CircularProgress />
+        </ProgressTransition>
+      </div>
+      <div className={classes.contentWrapper}>
+        <ContentTransition in={contentVisible} mountOnEnter unmountOnExit timeout={timeout}>
+          <div className={classes.contentComponentWrapper}>
+            <Component {...props} />
+          </div>
+        </ContentTransition>
+      </div>
     </div>
   );
 };
 
-FadeWrapperPage.propTypes = {};
+FadeWrapperPage.propTypes = {
+  classes: PropTypes.object.isRequired,
+  fetching: PropTypes.bool.isRequired,
+  timeout: PropTypes.number.isRequired,
+  ProgressTransition: PropTypes.element.isRequired,
+  ContentTransition: PropTypes.element.isRequired,
+  Component: PropTypes.element.isRequired,
+};
 
 export default withStyles(styles)(FadeWrapperPage);

@@ -8,14 +8,9 @@ import { withStyles, Button } from '@material-ui/core';
 
 const styles = theme => ({
   card: {
-    marginBottom: 'auto',
+    marginBottom: theme.spacing(4),
     marginTop: 'auto',
     width: '70vmin',
-  },
-  cardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: '1',
   },
   textFieldInput: {
     lineHeight: '180%',
@@ -23,26 +18,25 @@ const styles = theme => ({
     '&:after': {
       borderBottomColor: theme.palette.secondary.main,
     },
-    paddingBottom: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
   },
   textFieldRawInput: {
     textAlign: 'center',
   },
   textField: {
-    marginTop: 'auto',
+    marginTop: theme.spacing(1),
   },
   button: {
-    marginTop: theme.spacing(1),
-    width: '100%',
+    marginTop: theme.spacing(2),
   },
   rightIcon: {
     marginLeft: theme.spacing(1),
   },
 });
 
-const InputCard = ({ classes, input, setInput, submit, buttonText }) => (
+const InputCard = ({ classes, input, setInput, submitForm, buttonText }) => (
   <Card className={classes.card}>
-    <CardContent className={classes.cardContent}>
+    <CardContent>
       <TextField
         InputProps={{
           className: classes.textFieldInput,
@@ -58,8 +52,9 @@ const InputCard = ({ classes, input, setInput, submit, buttonText }) => (
       <Button
         variant="contained"
         color="secondary"
+        fullWidth
         className={classes.button}
-        onClick={() => submit()}
+        onClick={() => submitForm()}
       >
         {buttonText}
         <SendIcon className={classes.rightIcon} />
@@ -70,6 +65,10 @@ const InputCard = ({ classes, input, setInput, submit, buttonText }) => (
 
 InputCard.propTypes = {
   classes: PropTypes.shape(styles).isRequired,
+  input: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
+  setInput: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(InputCard);

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as UUID } from 'uuid';
 import { ListItem, TextField, Fab, Grid, withStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
@@ -24,7 +25,7 @@ const QuizFormFlashcardsAddRow = ({ classes, handleAddClick }) => {
 
   const addNewFlashcard = () => {
     if (newQuestion !== '' && newAnswer !== '') {
-      handleAddClick({ question: newQuestion, answer: newAnswer });
+      handleAddClick({ id: UUID(), question: newQuestion, answer: newAnswer });
       setNewQuestion('');
       setNewAnswer('');
       questionInput.current.focus();

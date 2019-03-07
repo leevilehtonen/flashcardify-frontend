@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { withSnackbar } from 'notistack';
+import { updateQuiz } from '../../../services/quizzes';
 import QuizForm from '../../common/QuizForm';
 
-const EditForm = ({ quiz, saveQuiz }) => {
+const EditPageContent = ({ redirect, quiz, enqueueSnackbar }) => {
   const [flashcards, setFlashcards] = useState(quiz.flashcards);
   const [title, setTitle] = useState(quiz.title);
   const [description, setDescription] = useState(quiz.description);
@@ -10,8 +12,10 @@ const EditForm = ({ quiz, saveQuiz }) => {
 
   const submitForm = async () => {
     setSaving(true);
-    await saveQuiz(quiz.id, { title, description, flashcards });
+    const result = await updateQuiz(quiz.id, { title, description, flashcards });
+    enqueueSnackbar(`Quiz "${result.title}" updated`);
     setSaving(false);
+    setTimeout(() => redirect('/collections'), 1000);
   };
 
   return (
@@ -24,14 +28,15 @@ const EditForm = ({ quiz, saveQuiz }) => {
       setDescription={setDescription}
       saving={saving}
       submitText="Update"
-      submitHandler={submitForm}
+      submitForm={submitForm}
       cardTitle="Update a quiz"
     />
   );
 };
 
-EditForm.propTypes = {
+EditPageContent.propTypes = {
   quiz: PropTypes.object.isRequired,
-  saveQuiz: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
 };
-export default EditForm;
+export default withSnackbar(EditPageContent);

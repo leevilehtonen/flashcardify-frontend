@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -6,16 +6,16 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core';
 import { red, green } from '@material-ui/core/colors';
-import posed from 'react-pose';
+import Animation from './Animation';
 import PredictionStatus from './PredictionStatus';
 import AnimationStatus from './AnimationStatus';
 
-const styles = {
+const styles = theme => ({
   container: {
-    marginBottom: 'auto',
-    marginTop: 'auto',
     width: '70vmin',
-    height: '65vmin',
+    height: '65%',
+    marginBottom: 'auto',
+    marginTop: theme.spacing(4),
   },
   card: {
     display: 'flex',
@@ -35,147 +35,87 @@ const styles = {
     fontSize: '2.5vmax',
     textAlign: 'center',
   },
-};
-
-const Box = posed.div({
-  [AnimationStatus.ENTER]: {
-    rotateY: 0,
-    opacity: 1,
-    scale: 0.01,
-    transition: {
-      duration: 0,
-    },
-  },
-  [AnimationStatus.EXIT]: {
-    rotateY: 0,
-    opacity: 0,
-    scale: 2,
-    transition: {
-      duration: 600,
-    },
-  },
-  [AnimationStatus.SHOW_ORIGINAL]: {
-    rotateY: 0,
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 600,
-    },
-  },
-  [AnimationStatus.HIDE_ORIGINAL]: {
-    rotateY: 90,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 600,
-      ease: 'easeOut',
-    },
-  },
-  [AnimationStatus.SWAP]: {
-    rotateY: -90,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0,
-      ease: 'linear',
-    },
-  },
-  [AnimationStatus.SHOW_ANSWER]: {
-    rotateY: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 600,
-      ease: 'easeOut',
-    },
-  },
 });
 
-class DisplayCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      animationStatus: AnimationStatus.ENTER,
-    };
-  }
+const DisplayCard = ({ classes, predictionStatus, flashcard, correct }) => {
+  const [animationStatus, setAnimationStatus] = useState(AnimationStatus.ENTER);
 
-  componentDidMount() {
-    this.setState({ animationStatus: AnimationStatus.SHOW_ORIGINAL });
-  }
+  useEffect(() => {
+    setAnimationStatus(AnimationStatus.SHOW_QUESTION);
+  }, []);
 
-  onPoseComplete = () => {
-    this.setState(prevState => {
-      const { animationStatus } = prevState;
+  useEffect(() => {
+    if (
+      predictionStatus === PredictionStatus.ANSWER &&
+      animationStatus === AnimationStatus.SHOW_QUESTION
+    ) {
+      setAnimationStatus(AnimationStatus.HIDE_QUESTION);
+    } else if (
+      predictionStatus === PredictionStatus.QUESTION &&
+      animationStatus === AnimationStatus.SHOW_ANSWER
+    ) {
+      setAnimationStatus(AnimationStatus.EXIT);
+    }
+  }, [predictionStatus]);
 
-      switch (animationStatus) {
-        case AnimationStatus.ENTER:
-          return { animationStatus: AnimationStatus.SHOW_ORIGINAL };
-        case AnimationStatus.EXIT:
-          return { animationStatus: AnimationStatus.ENTER };
-        case AnimationStatus.HIDE_ORIGINAL:
-          return { animationStatus: AnimationStatus.SWAP };
-        case AnimationStatus.SWAP:
-          return { animationStatus: AnimationStatus.SHOW_ANSWER };
-        default:
-          return {};
-      }
-    });
+  const onPoseComplete = () => {
+    switch (animationStatus) {
+      case AnimationStatus.ENTER:
+        setAnimationStatus(AnimationStatus.SHOW_QUESTION);
+        break;
+      case AnimationStatus.EXIT:
+        setAnimationStatus(AnimationStatus.ENTER);
+        break;
+      case AnimationStatus.HIDE_QUESTION:
+        setAnimationStatus(AnimationStatus.SWAP);
+        break;
+      case AnimationStatus.SWAP:
+        setAnimationStatus(AnimationStatus.SHOW_ANSWER);
+        break;
+      default:
+    }
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.predictionStatus === PredictionStatus.ANSWER &&
-      prevState.animationStatus === AnimationStatus.SHOW_ORIGINAL
-    ) {
-      return { animationStatus: AnimationStatus.HIDE_ORIGINAL };
+  const getCardText = () => {
+    if (animationStatus === AnimationStatus.SHOW_ANSWER) {
+      return flashcard.answer;
     }
     if (
-      nextProps.predictionStatus === PredictionStatus.ORIGINAL &&
-      prevState.animationStatus === AnimationStatus.SHOW_ANSWER
+      animationStatus === AnimationStatus.SHOW_QUESTION ||
+      animationStatus === AnimationStatus.ENTER ||
+      animationStatus === AnimationStatus.HIDE_QUESTION
     ) {
-      return { animationStatus: AnimationStatus.EXIT };
+      return flashcard.question;
     }
-    return null;
-  }
+    return '';
+  };
 
-  render() {
-    const {
-      classes,
-      flashcard: { question, answer },
-    } = this.props;
-    const { animationStatus } = this.state;
-    return (
-      <Box
-        className={classes.container}
-        pose={animationStatus}
-        onPoseComplete={this.onPoseComplete}
+  return (
+    <Animation className={classes.container} pose={animationStatus} onPoseComplete={onPoseComplete}>
+      <Card
+        className={classNames(classes.card, {
+          [classes.correctCard]: animationStatus === AnimationStatus.SHOW_ANSWER && correct,
+          [classes.incorrectCard]: animationStatus === AnimationStatus.SHOW_ANSWER && !correct,
+        })}
       >
-        <Card
-          className={classNames(classes.card, {
-            [classes.correctCard]: animationStatus === AnimationStatus.SHOW_ANSWER,
-          })}
-        >
-          <CardContent className={classes.cardContent}>
-            <Typography className={classes.text} variant="h5" align="center" gutterBottom>
-              {animationStatus === AnimationStatus.SHOW_ANSWER ? answer : ''}
-              {animationStatus === AnimationStatus.ENTER ||
-              animationStatus === AnimationStatus.SHOW_ORIGINAL
-                ? question
-                : ''}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-    );
-  }
-}
+        <CardContent className={classes.cardContent}>
+          <Typography className={classes.text} variant="h5" align="center" gutterBottom>
+            {getCardText()}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Animation>
+  );
+};
 
 DisplayCard.propTypes = {
   classes: PropTypes.object.isRequired,
   flashcard: PropTypes.shape({
-    original: PropTypes.string.isRequired,
-    translation: PropTypes.string.isRequired,
+    question: PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
   }).isRequired,
+  correct: PropTypes.bool.isRequired,
+  predictionStatus: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(DisplayCard);

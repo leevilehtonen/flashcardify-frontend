@@ -33,7 +33,7 @@ const QuizForm = ({
   setDescription,
   saving,
   submitText,
-  submitHandler,
+  submitForm,
   cardTitle,
 }) => {
   return (
@@ -56,7 +56,7 @@ const QuizForm = ({
               disabled={
                 saving || title.length === 0 || description.length === 0 || flashcards.length === 0
               }
-              onClick={() => submitHandler()}
+              onClick={() => submitForm()}
             >
               {submitText}
             </Button>
@@ -79,7 +79,7 @@ QuizForm.propTypes = {
   setDescription: PropTypes.func.isRequired,
   saving: PropTypes.bool.isRequired,
   submitText: PropTypes.string.isRequired,
-  submitHandler: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired,
   cardTitle: PropTypes.string.isRequired,
 };
 export default withStyles(styles)(QuizForm);

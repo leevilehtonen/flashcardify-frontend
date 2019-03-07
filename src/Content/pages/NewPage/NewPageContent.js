@@ -4,7 +4,7 @@ import { withSnackbar } from 'notistack';
 import { createQuiz } from '../../../services/quizzes';
 import QuizForm from '../../common/QuizForm';
 
-const NewForm = ({ enqueueSnackbar, redirect }) => {
+const NewPageContent = ({ enqueueSnackbar, redirect }) => {
   const [flashcards, setFlashcards] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -18,7 +18,11 @@ const NewForm = ({ enqueueSnackbar, redirect }) => {
 
   const submitForm = async () => {
     setSaving(true);
-    const result = await createQuiz({ title, description, flashcards });
+    const result = await createQuiz({
+      title,
+      description,
+      flashcards: flashcards.map(({ id, ...fields }) => ({ ...fields })),
+    });
     setSaving(false);
     enqueueSnackbar(`Quiz "${result.title}" created`);
     clearFrom();
@@ -35,14 +39,14 @@ const NewForm = ({ enqueueSnackbar, redirect }) => {
       setDescription={setDescription}
       saving={saving}
       submitText="Create"
-      submitHandler={submitForm}
+      submitForm={submitForm}
       cardTitle="Create a new quiz"
     />
   );
 };
 
-NewForm.propTypes = {
+NewPageContent.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
   redirect: PropTypes.func.isRequired,
 };
-export default withSnackbar(NewForm);
+export default withSnackbar(NewPageContent);

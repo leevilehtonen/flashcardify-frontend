@@ -1,8 +1,8 @@
 export default Object.freeze({
   ENTER: 'enter',
   EXIT: 'exit',
-  SHOW_ORIGINAL: 'showOriginal',
-  HIDE_ORIGINAL: 'hideOriginal',
+  SHOW_QUESTION: 'showQuestion',
+  HIDE_QUESTION: 'hideQuestion',
   SWAP: 'swap',
   SHOW_ANSWER: 'showAnswer',
 });

@@ -10,6 +10,16 @@ const DrawerListTop = () => (
     items={[
       {
         icon: DashboardIcon,
+        text: 'Test1',
+        to: '/test1',
+      },
+      {
+        icon: DashboardIcon,
+        text: 'Test2',
+        to: '/test2',
+      },
+      {
+        icon: DashboardIcon,
         text: 'Predict',
         to: '/predict',
       },

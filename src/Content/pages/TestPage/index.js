@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Fade, Grow } from '@material-ui/core';
 import FadeWrapperPage from '../../FadeWrapperPage';
 
 const TestPage = props => {
@@ -8,10 +9,20 @@ const TestPage = props => {
   useEffect(() => {
     setTimeout(() => {
       setFetching(false);
-    }, 3000);
+    }, 1000);
   }, []);
 
-  return <FadeWrapperPage fetching={fetching} timeout={1000} />;
+  return (
+    <FadeWrapperPage
+      Component={() => <div />}
+      ProgressTransition={Fade}
+      ContentTransition={Grow}
+      fetching={fetching}
+      timeout={300}
+      quiz={{ id: 0, title: 'hello', description: 'world' }}
+      redirect={() => {}}
+    />
+  );
 };
 
 TestPage.propTypes = {};
