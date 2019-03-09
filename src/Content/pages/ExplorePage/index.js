@@ -1,45 +1,55 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core';
-import ExploreCard from './ExploreCard';
-import mockData from '../../../quizzes.json';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Fade } from '@material-ui/core';
+import FadeWrapperPage from '../../FadeWrapperPage';
+import ExplorePageContent from './ExplorePageContent';
+import { getQuizzes } from '../../../services/quizzes';
 
-const styles = theme => ({
-  root: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    margin: theme.spacing(3),
-  },
-});
+const ExplorePage = ({ history, contentRef }) => {
+  const [fetching, setFetching] = useState(true);
+  const [quizzes, setQuizzes] = useState([]);
+  const [count, setCount] = useState(0);
+  const [nextPage, setNextPage] = useState(1);
+  const quizzesPerPage = 12;
 
-class ExplorePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quizzes: mockData,
-    };
-  }
+  const fetchInitialQuizzes = async () => {
+    setFetching(true);
+    const results = await getQuizzes(0, quizzesPerPage);
+    setQuizzes(results.quizzes);
+    setCount(results.count);
+    setFetching(false);
+  };
 
-  componentDidMount() {}
+  const fetchMoreQuizzes = async () => {
+    const results = await getQuizzes(nextPage, quizzesPerPage);
+    setNextPage(nextPage + 1);
+    setQuizzes(quizzes.concat(results.quizzes));
+  };
 
-  render() {
-    const { classes } = this.props;
-    const { quizzes } = this.state;
+  useEffect(() => {
+    fetchInitialQuizzes();
+  }, []);
 
-    return (
-      <div className={classes.root}>
-        <Grid container justify="flex-start" spacing={3}>
-          {quizzes.map(quiz => (
-            <Grid key={quiz.id} item xs={12} sm={6} lg={4} xl={3}>
-              <ExploreCard quiz={quiz} />
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-    );
-  }
-}
+  return (
+    <FadeWrapperPage
+      Component={ExplorePageContent}
+      ProgressTransition={Fade}
+      ContentTransition={Fade}
+      fetching={fetching}
+      setFetching={setFetching}
+      timeout={300}
+      redirect={path => history.push(path)}
+      quizzes={quizzes}
+      fetchMoreQuizzes={fetchMoreQuizzes}
+      hasMoreQuizzes={quizzes.length < count}
+      contentRef={contentRef}
+      quizzesPerPage={quizzesPerPage}
+    />
+  );
+};
 
-export default withStyles(styles)(ExplorePage);
+ExplorePage.propTypes = {
+  history: PropTypes.object.isRequired,
+  contentRef: PropTypes.object.isRequired,
+};
+export default ExplorePage;

@@ -28,7 +28,7 @@ const ViewFlashcards = ({ classes, flashcards }) => {
           Below is the list of all flashcards included in this quiz.
         </Typography>
         <Divider className={classes.divider} />
-        <Collapse in={show} timeout={1000}>
+        <Collapse in={show} timeout={300}>
           <ViewFlashcardsList flashcards={flashcards} />
         </Collapse>
       </CardContent>

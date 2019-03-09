@@ -12,7 +12,7 @@ const styles = theme => ({
   },
 });
 
-const CollectionsPageContent = ({
+const ExplorePageContent = ({
   redirect,
   quizzes,
   hasMoreQuizzes,
@@ -31,6 +31,14 @@ const CollectionsPageContent = ({
       name: 'Open',
       color: 'primary',
       variant: 'contained',
+      fullWidth: true,
+      action: () => {
+        redirect(`/view/${id}`);
+      },
+    },
+    {
+      name: 'Add',
+      color: 'primary',
       fullWidth: true,
       action: () => {
         redirect(`/view/${id}`);
@@ -61,7 +69,7 @@ const CollectionsPageContent = ({
                 style={{ transitionDelay: `${id % quizzesPerPage}00ms` }}
               >
                 <div>
-                  <QuizCard quiz={quiz} actions={actions(quiz.id)} />
+                  <QuizCard quiz={quiz} actions={actions(quiz.id)} header />
                 </div>
               </Zoom>
             </Grid>
@@ -72,7 +80,7 @@ const CollectionsPageContent = ({
   );
 };
 
-CollectionsPageContent.propTypes = {
+ExplorePageContent.propTypes = {
   redirect: PropTypes.func.isRequired,
   quizzes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   hasMoreQuizzes: PropTypes.bool.isRequired,
@@ -82,29 +90,4 @@ CollectionsPageContent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CollectionsPageContent);
-
-/*
- <Zoom
-                in={visible}
-                // style={{ transitionDelay: `${(id % (quizzesPerPage - 1)) * 5}0ms` }}
-              >
-                <div>
-                  <QuizCard quiz={quiz} actions={actions(quiz.id)} />
-                </div>
-              </Zoom>
-*/
-
-/*
- <InfiniteScroll
-        loadMore={fetchMoreQuizzes}
-        hasMore={hasMoreQuizzes}
-        useWindow={false}
-        getScrollParent={() => contentRef.current}
-        loader={
-          <div className="loader" key={0}>
-            Loading ...
-          </div>
-        }
-      >
-*/
+export default withStyles(styles)(ExplorePageContent);

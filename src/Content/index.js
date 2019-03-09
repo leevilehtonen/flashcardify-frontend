@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { Route, withRouter } from 'react-router-dom';
@@ -8,7 +8,6 @@ import ExplorePage from './pages/ExplorePage';
 import NewPage from './pages/NewPage';
 import EditPage from './pages/EditPage';
 import ViewPage from './pages/ViewPage';
-import TestPage from './pages/TestPage';
 
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
@@ -26,25 +25,27 @@ const styles = theme => ({
   },
 });
 
-const Content = ({ location, classes }) => {
-  const content = useRef(null);
-
-  useLayoutEffect(() => {
-    content.current.scrollTo(0, 0);
-  }, [location.pathname]);
+const Content = ({ classes }) => {
+  const contentRef = useRef(null);
 
   return (
-    <main ref={content} className={classes.root}>
+    <main className={classes.root}>
       <div className={classes.toolbar} />
-      <div className={classes.content}>
+      <div className={classes.content} ref={contentRef}>
         <Route exact path="/predict/:id" component={PredictPage} />
         <Route exact path="/new" component={NewPage} />
-        <Route exact path="/collections" component={CollectionsPage} />
-        <Route exact path="/explore" component={ExplorePage} />
+        <Route
+          exact
+          path="/collections"
+          render={props => <CollectionsPage {...props} contentRef={contentRef} />}
+        />
+        <Route
+          exact
+          path="/explore"
+          render={props => <ExplorePage {...props} contentRef={contentRef} />}
+        />
         <Route exact path="/view/:id" component={ViewPage} />
         <Route exact path="/edit/:id" component={EditPage} />
-        <Route exact path="/test1" component={TestPage} />
-        <Route exact path="/test2" component={TestPage} />
       </div>
     </main>
   );
@@ -52,13 +53,6 @@ const Content = ({ location, classes }) => {
 
 Content.propTypes = {
   classes: PropTypes.shape(styles).isRequired,
-  location: PropTypes.object.isRequired,
 };
 
 export default withRouter(withStyles(styles)(Content));
-
-/*
-        <FadeRoute show={show} path="/new" component={NewPage} />
-          <FadeRoute show={show} path="/collections" component={CollectionsPage} />
-          <FadeRoute show={show} path="/explore" component={ExplorePage} />
-*/

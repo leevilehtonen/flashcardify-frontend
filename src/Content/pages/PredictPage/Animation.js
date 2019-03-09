@@ -15,7 +15,7 @@ const Box = posed.div({
     opacity: 0,
     scale: 2,
     transition: {
-      duration: 600,
+      duration: 300,
     },
   },
   [AnimationStatus.SHOW_QUESTION]: {
@@ -23,7 +23,7 @@ const Box = posed.div({
     scale: 1,
     opacity: 1,
     transition: {
-      duration: 600,
+      duration: 300,
     },
   },
   [AnimationStatus.HIDE_QUESTION]: {
@@ -31,7 +31,7 @@ const Box = posed.div({
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 600,
+      duration: 300,
       ease: 'easeOut',
     },
   },
@@ -49,7 +49,7 @@ const Box = posed.div({
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 600,
+      duration: 300,
       ease: 'easeOut',
     },
   },

@@ -81,9 +81,9 @@ FadeWrapperPage.propTypes = {
   classes: PropTypes.object.isRequired,
   fetching: PropTypes.bool.isRequired,
   timeout: PropTypes.number.isRequired,
-  ProgressTransition: PropTypes.element.isRequired,
-  ContentTransition: PropTypes.element.isRequired,
-  Component: PropTypes.element.isRequired,
+  ProgressTransition: PropTypes.func.isRequired,
+  ContentTransition: PropTypes.func.isRequired,
+  Component: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(FadeWrapperPage);

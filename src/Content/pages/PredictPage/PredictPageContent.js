@@ -15,6 +15,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflow: 'hidden',
   },
 };
 
@@ -35,7 +36,7 @@ const PredictPageContent = ({ quiz, classes }) => {
       setPredictionStatus(PredictionStatus.QUESTION);
       setTimeout(() => {
         setQuestionNumber(questionNumber + 1);
-      }, 600);
+      }, 300);
     }
   };
 
@@ -50,7 +51,7 @@ const PredictPageContent = ({ quiz, classes }) => {
         input={input}
         setInput={setInput}
         submitForm={submitForm}
-        buttonText={predictionStatus === PredictionStatus.QUESTION ? 'Submit' : 'Next'}
+        predictionStatus={predictionStatus}
       />
     </div>
   );

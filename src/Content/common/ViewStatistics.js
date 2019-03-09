@@ -15,7 +15,7 @@ const styles = theme => ({
   },
 });
 
-const ViewStatistics = ({ classes, tries, dones, difficulty }) => (
+const ViewStatistics = ({ classes, quiz: { tries, successes, difficulty } }) => (
   <div className={classes.root}>
     <Person />
     <Typography variant="body2" className={classes.text}>
@@ -23,7 +23,7 @@ const ViewStatistics = ({ classes, tries, dones, difficulty }) => (
     </Typography>
     <Done />
     <Typography variant="body2" className={classes.text}>
-      {dones}
+      {successes}
     </Typography>
     <SignalCellular2Bar />
     <Typography variant="body2" className={classes.text}>
@@ -33,10 +33,12 @@ const ViewStatistics = ({ classes, tries, dones, difficulty }) => (
 );
 
 ViewStatistics.propTypes = {
-  tries: PropTypes.number.isRequired,
-  dones: PropTypes.number.isRequired,
-  difficulty: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
+  quiz: PropTypes.shape({
+    tries: PropTypes.number.isRequired,
+    successes: PropTypes.number.isRequired,
+    difficulty: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(styles)(ViewStatistics);

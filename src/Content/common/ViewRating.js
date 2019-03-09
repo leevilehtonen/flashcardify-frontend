@@ -20,7 +20,7 @@ const styles = theme => ({
   },
 });
 
-const ViewRating = ({ classes, rating, total }) => {
+const ViewRating = ({ classes, quiz: { rating, ratings } }) => {
   const getFractionStarElement = () => {
     const fraction = rating - Math.min(Math.trunc(rating), 4);
     if (fraction < 0.25) {
@@ -43,7 +43,7 @@ const ViewRating = ({ classes, rating, total }) => {
         <StarBorder className={classes.star} key={i} fontSize="small" />
       ))}
       <Typography variant="body2" className={classes.text}>
-        {rating.toFixed(1)} ({total})
+        {rating.toFixed(1)} ({ratings})
       </Typography>
     </div>
   );
@@ -51,8 +51,10 @@ const ViewRating = ({ classes, rating, total }) => {
 
 ViewRating.propTypes = {
   classes: PropTypes.object.isRequired,
-  rating: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
+  quiz: PropTypes.shape({
+    rating: PropTypes.number.isRequired,
+    ratings: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(styles)(ViewRating);

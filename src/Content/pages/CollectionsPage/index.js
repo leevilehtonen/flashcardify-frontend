@@ -5,18 +5,29 @@ import FadeWrapperPage from '../../FadeWrapperPage';
 import CollectionsPageContent from './CollectionsPageContent';
 import { getQuizzes } from '../../../services/quizzes';
 
-const CollectionsPage = ({ history }) => {
+const CollectionsPage = ({ history, contentRef }) => {
   const [fetching, setFetching] = useState(true);
   const [quizzes, setQuizzes] = useState([]);
+  const [count, setCount] = useState(0);
+  const [nextPage, setNextPage] = useState(1);
+  const quizzesPerPage = 12;
 
-  const fetchQuizzes = async () => {
-    const result = await getQuizzes();
-    setQuizzes(result);
+  const fetchInitialQuizzes = async () => {
+    setFetching(true);
+    const results = await getQuizzes(0, quizzesPerPage);
+    setQuizzes(results.quizzes);
+    setCount(results.count);
     setFetching(false);
   };
 
+  const fetchMoreQuizzes = async () => {
+    const results = await getQuizzes(nextPage, quizzesPerPage);
+    setNextPage(nextPage + 1);
+    setQuizzes(quizzes.concat(results.quizzes));
+  };
+
   useEffect(() => {
-    fetchQuizzes();
+    fetchInitialQuizzes();
   }, []);
 
   return (
@@ -29,11 +40,16 @@ const CollectionsPage = ({ history }) => {
       timeout={300}
       redirect={path => history.push(path)}
       quizzes={quizzes}
+      fetchMoreQuizzes={fetchMoreQuizzes}
+      hasMoreQuizzes={quizzes.length < count}
+      contentRef={contentRef}
+      quizzesPerPage={quizzesPerPage}
     />
   );
 };
 
 CollectionsPage.propTypes = {
   history: PropTypes.object.isRequired,
+  contentRef: PropTypes.object.isRequired,
 };
 export default CollectionsPage;

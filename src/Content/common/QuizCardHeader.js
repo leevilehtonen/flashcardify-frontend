@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -39,5 +40,11 @@ const QuizCardHeader = ({ classes, username, date }) => (
     subheader={date}
   />
 );
+
+QuizCardHeader.propTypes = {
+  classes: PropTypes.object.isRequired,
+  username: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(QuizCardHeader);

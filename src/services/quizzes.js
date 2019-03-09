@@ -2,8 +2,13 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3001/api/quizzes';
 
-export const getQuizzes = async () => {
-  const results = await axios.get(`${API_URL}`);
+export const getQuizzes = async (page, quizzesPerPage) => {
+  const results = await axios.get(`${API_URL}`, {
+    params: {
+      page,
+      quizzesPerPage,
+    },
+  });
   return results.data;
 };
 export const getQuiz = async (id, flashcards) => {

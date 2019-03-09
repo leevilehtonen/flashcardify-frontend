@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import { withStyles, Button } from '@material-ui/core';
+import PredictionStatus from './PredictionStatus';
 
 const styles = theme => ({
   card: {
@@ -18,7 +20,10 @@ const styles = theme => ({
     '&:after': {
       borderBottomColor: theme.palette.secondary.main,
     },
-    // paddingBottom: theme.spacing(1),
+  },
+  textFieldAnswer: {
+    caretColor: 'transparent',
+    textColor: 'rgba(0,0,0,0.38)',
   },
   textFieldRawInput: {
     textAlign: 'center',
@@ -34,7 +39,7 @@ const styles = theme => ({
   },
 });
 
-const InputCard = ({ classes, input, setInput, submitForm, buttonText }) => (
+const InputCard = ({ classes, input, setInput, submitForm, predictionStatus }) => (
   <Card className={classes.card}>
     <CardContent>
       <TextField
@@ -42,12 +47,23 @@ const InputCard = ({ classes, input, setInput, submitForm, buttonText }) => (
           className: classes.textFieldInput,
           inputProps: { className: classes.textFieldRawInput },
         }}
-        className={classes.textField}
+        className={classNames(classes.textField, {
+          [classes.textFieldAnswer]: predictionStatus === PredictionStatus.ANSWER,
+        })}
         rowsMax={2}
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={e =>
+          predictionStatus === PredictionStatus.QUESTION ? setInput(e.target.value) : null
+        }
+        onKeyPress={e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            submitForm();
+          }
+        }}
         multiline
         fullWidth
+        autoFocus
       />
       <Button
         variant="contained"
@@ -56,7 +72,7 @@ const InputCard = ({ classes, input, setInput, submitForm, buttonText }) => (
         className={classes.button}
         onClick={() => submitForm()}
       >
-        {buttonText}
+        {predictionStatus === PredictionStatus.QUESTION ? 'Submit' : 'Next'}
         <SendIcon className={classes.rightIcon} />
       </Button>
     </CardContent>
@@ -66,7 +82,7 @@ const InputCard = ({ classes, input, setInput, submitForm, buttonText }) => (
 InputCard.propTypes = {
   classes: PropTypes.shape(styles).isRequired,
   input: PropTypes.string.isRequired,
-  buttonText: PropTypes.string.isRequired,
+  predictionStatus: PropTypes.string.isRequired,
   setInput: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
 };
