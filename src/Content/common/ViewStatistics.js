@@ -1,7 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, Typography } from '@material-ui/core';
-import { Person, Done, SignalCellular2Bar } from '@material-ui/icons';
+import {
+  Person,
+  Done,
+  SignalCellular0Bar,
+  SignalCellular1Bar,
+  SignalCellular2Bar,
+  SignalCellular3Bar,
+  SignalCellular4Bar,
+} from '@material-ui/icons';
+import Difficulty from '../../misc/Difficulty';
 
 const styles = theme => ({
   root: {
@@ -15,22 +24,41 @@ const styles = theme => ({
   },
 });
 
-const ViewStatistics = ({ classes, quiz: { tries, successes, difficulty } }) => (
-  <div className={classes.root}>
-    <Person />
-    <Typography variant="body2" className={classes.text}>
-      {tries}
-    </Typography>
-    <Done />
-    <Typography variant="body2" className={classes.text}>
-      {successes}
-    </Typography>
-    <SignalCellular2Bar />
-    <Typography variant="body2" className={classes.text}>
-      {difficulty}
-    </Typography>
-  </div>
-);
+const ViewStatistics = ({ classes, quiz: { tries, successes, difficulty } }) => {
+  const getDifficultyIcon = () => {
+    switch (difficulty) {
+      case Difficulty.TRIVIAL:
+        return <SignalCellular0Bar />;
+      case Difficulty.EASY:
+        return <SignalCellular1Bar />;
+      case Difficulty.MEDIUM:
+        return <SignalCellular2Bar />;
+      case Difficulty.HARD:
+        return <SignalCellular3Bar />;
+      case Difficulty.IMPOSSIBLE:
+        return <SignalCellular4Bar />;
+      default:
+        return <SignalCellular0Bar />;
+    }
+  };
+
+  return (
+    <div className={classes.root}>
+      <Person />
+      <Typography variant="body2" className={classes.text}>
+        {tries}
+      </Typography>
+      <Done />
+      <Typography variant="body2" className={classes.text}>
+        {successes}
+      </Typography>
+      {getDifficultyIcon()}
+      <Typography variant="body2" className={classes.text}>
+        {difficulty}
+      </Typography>
+    </div>
+  );
+};
 
 ViewStatistics.propTypes = {
   classes: PropTypes.object.isRequired,

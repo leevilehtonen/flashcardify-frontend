@@ -5,7 +5,7 @@ import { getQuiz } from '../../../services/quizzes';
 import FadeWrapperPage from '../../FadeWrapperPage';
 import PredictPageContent from './PredictPageContent';
 
-const PredictPage = ({ match }) => {
+const PredictPage = ({ match, history }) => {
   const [fetching, setFetching] = useState(true);
   const [quiz, setQuiz] = useState({});
 
@@ -28,11 +28,13 @@ const PredictPage = ({ match }) => {
       setFetching={setFetching}
       timeout={300}
       quiz={quiz}
+      redirect={path => history.push(path)}
     />
   );
 };
 
 PredictPage.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 export default PredictPage;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,5 +23,10 @@ const QuizCardMedia = ({ classes, url }) => (
     }
   />
 );
+
+QuizCardMedia.propTypes = {
+  classes: PropTypes.object.isRequired,
+  url: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(QuizCardMedia);

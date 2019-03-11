@@ -50,7 +50,7 @@ const ViewPageContent = ({ classes, quiz, fetchQuiz, redirect }) => {
       fullWidth: false,
       size: 'large',
       action: () => {
-        redirect(`/predict/${quiz.id}`);
+        redirect(`/edit/${quiz.id}`);
       },
     },
   ];

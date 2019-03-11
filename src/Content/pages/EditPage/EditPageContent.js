@@ -7,7 +7,9 @@ import QuizForm from '../../common/QuizForm';
 const EditPageContent = ({ redirect, quiz, enqueueSnackbar }) => {
   const [flashcards, setFlashcards] = useState(quiz.flashcards);
   const [title, setTitle] = useState(quiz.title);
+  const [difficulty, setDifficulty] = useState(quiz.difficulty);
   const [description, setDescription] = useState(quiz.description);
+  const [isPublic, setIsPublic] = useState(quiz.isPublic);
   const [saving, setSaving] = useState(false);
 
   const submitForm = async () => {
@@ -23,9 +25,13 @@ const EditPageContent = ({ redirect, quiz, enqueueSnackbar }) => {
       flashcards={flashcards}
       title={title}
       description={description}
+      difficulty={difficulty}
+      isPublic={isPublic}
       setFlashcards={setFlashcards}
       setTitle={setTitle}
       setDescription={setDescription}
+      setDifficulty={setDifficulty}
+      setIsPublic={setIsPublic}
       saving={saving}
       submitText="Update"
       submitForm={submitForm}

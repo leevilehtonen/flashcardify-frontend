@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 import DisplayCard from './DisplayCard';
 import InputCard from './InputCard';
 import PredictionStatus from './PredictionStatus';
@@ -19,24 +20,47 @@ const styles = {
   },
 };
 
-const PredictPageContent = ({ quiz, classes }) => {
+const PredictPageContent = ({ quiz, classes, enqueueSnackbar, redirect }) => {
   const [predictionStatus, setPredictionStatus] = useState(PredictionStatus.QUESTION);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [correct, setCorrect] = useState(true);
+  const [points, setPoints] = useState(0);
   const [input, setInput] = useState('');
+
+  const checkIfCorrect = () => {
+    const result =
+      quiz.flashcards[questionNumber].answer.toLowerCase().trim() === input.toLowerCase();
+    setCorrect(result);
+    if (result) {
+      setPoints(points + 1);
+    }
+  };
+
+  const isLastFlashcard = () => quiz.flashcards.length - 1 === questionNumber;
+
+  const nextFlashcard = () => {
+    setInput('');
+    setPredictionStatus(PredictionStatus.QUESTION);
+    setTimeout(() => {
+      setQuestionNumber(questionNumber + 1);
+    }, 300);
+  };
+
+  const finishQuiz = () => {
+    enqueueSnackbar(
+      `You have finished quiz "${quiz.title}" with points ${points}/${quiz.flashcards.length}`
+    );
+    redirect('/collections');
+  };
 
   const submitForm = () => {
     if (predictionStatus === PredictionStatus.QUESTION) {
-      setCorrect(
-        quiz.flashcards[questionNumber].answer.toLowerCase().trim() === input.toLowerCase().trim()
-      );
+      checkIfCorrect();
       setPredictionStatus(PredictionStatus.ANSWER);
+    } else if (isLastFlashcard()) {
+      finishQuiz();
     } else {
-      setInput('');
-      setPredictionStatus(PredictionStatus.QUESTION);
-      setTimeout(() => {
-        setQuestionNumber(questionNumber + 1);
-      }, 300);
+      nextFlashcard();
     }
   };
 
@@ -60,6 +84,8 @@ const PredictPageContent = ({ quiz, classes }) => {
 PredictPageContent.propTypes = {
   classes: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
+  redirect: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(PredictPageContent);
+export default withStyles(styles)(withSnackbar(PredictPageContent));

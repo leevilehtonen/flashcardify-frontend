@@ -31,11 +31,31 @@ const QuizForm = ({
   setTitle,
   description,
   setDescription,
+  difficulty,
+  setDifficulty,
+  isPublic,
+  setIsPublic,
   saving,
   submitText,
   submitForm,
   cardTitle,
 }) => {
+  const isValid = () => {
+    if (title.length === 0) {
+      return false;
+    }
+    if (description.length === 0) {
+      return false;
+    }
+    if (flashcards.length === 0) {
+      return false;
+    }
+    if (difficulty.length === 0) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className={classes.root}>
       <QuizFormDetails
@@ -43,6 +63,10 @@ const QuizForm = ({
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
+        difficulty={difficulty}
+        setDifficulty={setDifficulty}
+        isPublic={isPublic}
+        setIsPublic={setIsPublic}
         cardTitle={cardTitle}
       />
       <QuizFormFlashcards flashcards={flashcards} setFlashcards={setFlashcards} />
@@ -53,9 +77,7 @@ const QuizForm = ({
               variant="contained"
               size="large"
               color="primary"
-              disabled={
-                saving || title.length === 0 || description.length === 0 || flashcards.length === 0
-              }
+              disabled={saving || !isValid()}
               onClick={() => submitForm()}
             >
               {submitText}
@@ -74,9 +96,13 @@ QuizForm.propTypes = {
   flashcards: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  isPublic: PropTypes.bool.isRequired,
   setFlashcards: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
+  setDifficulty: PropTypes.func.isRequired,
+  setIsPublic: PropTypes.func.isRequired,
   saving: PropTypes.bool.isRequired,
   submitText: PropTypes.string.isRequired,
   submitForm: PropTypes.func.isRequired,

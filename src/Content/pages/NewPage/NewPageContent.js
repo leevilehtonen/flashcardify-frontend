@@ -8,6 +8,8 @@ const NewPageContent = ({ enqueueSnackbar, redirect }) => {
   const [flashcards, setFlashcards] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const clearFrom = () => {
@@ -21,6 +23,7 @@ const NewPageContent = ({ enqueueSnackbar, redirect }) => {
     const result = await createQuiz({
       title,
       description,
+      difficulty,
       flashcards: flashcards.map(({ id, ...fields }) => ({ ...fields })),
     });
     setSaving(false);
@@ -34,9 +37,13 @@ const NewPageContent = ({ enqueueSnackbar, redirect }) => {
       flashcards={flashcards}
       title={title}
       description={description}
+      difficulty={difficulty}
+      isPublic={isPublic}
       setFlashcards={setFlashcards}
       setTitle={setTitle}
       setDescription={setDescription}
+      setDifficulty={setDifficulty}
+      setIsPublic={setIsPublic}
       saving={saving}
       submitText="Create"
       submitForm={submitForm}
