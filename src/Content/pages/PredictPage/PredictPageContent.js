@@ -4,7 +4,10 @@ import { withStyles } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 import DisplayCard from './DisplayCard';
 import InputCard from './InputCard';
+import CompletionDialog from '../../common/CompletionDialog';
 import PredictionStatus from './PredictionStatus';
+import { startQuiz, finishQuiz } from '../../../services/predict';
+import { addRating } from '../../../services/rating';
 
 const styles = {
   root: {
@@ -20,12 +23,13 @@ const styles = {
   },
 };
 
-const PredictPageContent = ({ quiz, classes, enqueueSnackbar, redirect }) => {
+const PredictPageContent = ({ quiz, classes, redirect }) => {
   const [predictionStatus, setPredictionStatus] = useState(PredictionStatus.QUESTION);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [correct, setCorrect] = useState(true);
   const [points, setPoints] = useState(0);
   const [input, setInput] = useState('');
+  const [completionDialogOpen, setCompletionDialogOpen] = useState(false);
 
   const checkIfCorrect = () => {
     const result =
@@ -46,11 +50,21 @@ const PredictPageContent = ({ quiz, classes, enqueueSnackbar, redirect }) => {
     }, 300);
   };
 
-  const finishQuiz = () => {
-    enqueueSnackbar(
-      `You have finished quiz "${quiz.title}" with points ${points}/${quiz.flashcards.length}`
-    );
+  const completionDialogQuit = () => {
+    setCompletionDialogOpen(false);
     redirect('/collections');
+  };
+
+  const completionDialogTryAgain = () => {
+    setCompletionDialogOpen(false);
+    startQuiz(quiz.id);
+    setTimeout(() => {
+      setPredictionStatus(PredictionStatus.QUESTION);
+      setQuestionNumber(0);
+      setInput('');
+      setCorrect(true);
+      setPoints(0);
+    }, 300);
   };
 
   const submitForm = () => {
@@ -58,10 +72,15 @@ const PredictPageContent = ({ quiz, classes, enqueueSnackbar, redirect }) => {
       checkIfCorrect();
       setPredictionStatus(PredictionStatus.ANSWER);
     } else if (isLastFlashcard()) {
-      finishQuiz();
+      setCompletionDialogOpen(true);
+      finishQuiz(quiz.id);
     } else {
       nextFlashcard();
     }
+  };
+
+  const submitRating = async rating => {
+    await addRating(quiz.id, rating);
   };
 
   return (
@@ -77,6 +96,15 @@ const PredictPageContent = ({ quiz, classes, enqueueSnackbar, redirect }) => {
         submitForm={submitForm}
         predictionStatus={predictionStatus}
       />
+      <CompletionDialog
+        quiz={quiz}
+        open={completionDialogOpen}
+        setOpen={setCompletionDialogOpen}
+        quit={completionDialogQuit}
+        tryAgain={completionDialogTryAgain}
+        points={points}
+        submitRating={submitRating}
+      />
     </div>
   );
 };
@@ -85,7 +113,7 @@ PredictPageContent.propTypes = {
   classes: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
   redirect: PropTypes.func.isRequired,
-  enqueueSnackbar: PropTypes.func.isRequired,
+  // enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(withSnackbar(PredictPageContent));

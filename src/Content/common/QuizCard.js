@@ -11,7 +11,7 @@ const QuizCard = ({ quiz, actions, header }) => {
     <Card>
       {header && <QuizCardHeader username={quiz.title} date={quiz.updated} />}
       <QuizCardMedia url="http://www.bluthemes.com/assets/img/blog/12/mountains.jpg" />
-      <QuizCardContent title={quiz.title} description={quiz.description} />
+      <QuizCardContent title={quiz.title} description={quiz.description} isPublic={quiz.isPublic} />
       <QuizCardActions actions={actions} />
     </Card>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Fade } from '@material-ui/core';
 import { getQuiz } from '../../../services/quizzes';
+import { startQuiz } from '../../../services/predict';
 import FadeWrapperPage from '../../FadeWrapperPage';
 import PredictPageContent from './PredictPageContent';
 
@@ -11,6 +12,7 @@ const PredictPage = ({ match, history }) => {
 
   const fetchQuiz = async () => {
     const result = await getQuiz(match.params.id, true);
+    startQuiz(match.params.id);
     setQuiz(result);
     setFetching(false);
   };

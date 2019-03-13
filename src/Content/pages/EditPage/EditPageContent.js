@@ -14,7 +14,13 @@ const EditPageContent = ({ redirect, quiz, enqueueSnackbar }) => {
 
   const submitForm = async () => {
     setSaving(true);
-    const result = await updateQuiz(quiz.id, { title, description, flashcards });
+    const result = await updateQuiz(quiz.id, {
+      title,
+      description,
+      flashcards,
+      difficulty,
+      isPublic,
+    });
     enqueueSnackbar(`Quiz "${result.title}" updated`);
     setSaving(false);
     setTimeout(() => redirect('/collections'), 1000);

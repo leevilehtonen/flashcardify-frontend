@@ -57,7 +57,7 @@ const FadeWrapperPage = ({
         setContentVisible(true);
       }, timeout);
     }
-  }, [fetching]);
+  });
 
   return (
     <div className={classes.root}>

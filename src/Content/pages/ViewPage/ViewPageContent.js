@@ -7,8 +7,10 @@ import {
   Divider,
   Collapse,
   CircularProgress,
+  Tooltip,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { Public } from '@material-ui/icons';
 import QuizCardMedia from '../../common/QuizCardMedia';
 import ViewRating from '../../common/ViewRating';
 import ViewStatistics from '../../common/ViewStatistics';
@@ -68,7 +70,14 @@ const ViewPageContent = ({ classes, quiz, fetchQuiz, redirect }) => {
       <QuizCardMedia url="http://www.bluthemes.com/assets/img/blog/12/mountains.jpg" />
       <CardContent>
         <Typography gutterBottom variant="h5">
-          {quiz.title}
+          {quiz.title}{' '}
+          {quiz.isPublic ? (
+            <Tooltip title="Public" placement="right">
+              <Public color="action" />
+            </Tooltip>
+          ) : (
+            ''
+          )}
         </Typography>
         <ViewRating quiz={quiz} />
         <ViewStatistics quiz={quiz} />

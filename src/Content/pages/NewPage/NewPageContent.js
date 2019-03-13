@@ -24,6 +24,7 @@ const NewPageContent = ({ enqueueSnackbar, redirect }) => {
       title,
       description,
       difficulty,
+      isPublic,
       flashcards: flashcards.map(({ id, ...fields }) => ({ ...fields })),
     });
     setSaving(false);
