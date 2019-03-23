@@ -31,7 +31,7 @@ const QuizFormFlashcards = ({ flashcards, setFlashcards }) => {
 
         {flashcards.map((flashcard, id) => (
           <QuizFormFlashcardsRow
-            key={flashcard.id}
+            key={flashcard.newId || flashcard.id}
             count={id + 1}
             flashcard={flashcard}
             handleSaveClick={newFlashcard => {

@@ -4,6 +4,9 @@ import { Fade } from '@material-ui/core';
 import FadeWrapperPage from '../../FadeWrapperPage';
 import CollectionsPageContent from './CollectionsPageContent';
 import { getQuizzes } from '../../../services/quizzes';
+import { importImages } from '../../../misc/utils';
+
+const images = importImages();
 
 const CollectionsPage = ({ history, contentRef }) => {
   const [fetching, setFetching] = useState(true);
@@ -15,15 +18,17 @@ const CollectionsPage = ({ history, contentRef }) => {
   const fetchInitialQuizzes = async () => {
     setFetching(true);
     const results = await getQuizzes(0, quizzesPerPage);
-    setQuizzes(results.quizzes);
-    setCount(results.count);
+    results[0] = results[0].map(quiz => Object.assign({}, quiz, { image: images[quiz.image] }));
+    setQuizzes(results[0]);
+    setCount(results[1]);
     setFetching(false);
   };
 
   const fetchMoreQuizzes = async () => {
     const results = await getQuizzes(nextPage, quizzesPerPage);
+    results[0] = results[0].map(quiz => Object.assign({}, quiz, { image: images[quiz.image] }));
     setNextPage(nextPage + 1);
-    setQuizzes(quizzes.concat(results.quizzes));
+    setQuizzes(quizzes.concat(results[0]));
   };
 
   useEffect(() => {

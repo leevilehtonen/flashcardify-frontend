@@ -12,10 +12,10 @@ const styles = {
   },
 };
 
-const QuizCardMedia = ({ classes, url }) => (
+const QuizCardMedia = ({ classes, src }) => (
   <CardMedia
     className={classes.media}
-    image={url}
+    image={src}
     action={
       <IconButton>
         <MoreVertIcon />
@@ -26,7 +26,7 @@ const QuizCardMedia = ({ classes, url }) => (
 
 QuizCardMedia.propTypes = {
   classes: PropTypes.object.isRequired,
-  url: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(QuizCardMedia);

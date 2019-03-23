@@ -35,6 +35,8 @@ const QuizForm = ({
   setDifficulty,
   isPublic,
   setIsPublic,
+  image,
+  setImage,
   saving,
   submitText,
   submitForm,
@@ -67,6 +69,8 @@ const QuizForm = ({
         setDifficulty={setDifficulty}
         isPublic={isPublic}
         setIsPublic={setIsPublic}
+        image={image}
+        setImage={setImage}
         cardTitle={cardTitle}
       />
       <QuizFormFlashcards flashcards={flashcards} setFlashcards={setFlashcards} />
@@ -97,12 +101,14 @@ QuizForm.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   isPublic: PropTypes.bool.isRequired,
   setFlashcards: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
   setDifficulty: PropTypes.func.isRequired,
   setIsPublic: PropTypes.func.isRequired,
+  setImage: PropTypes.func.isRequired,
   saving: PropTypes.bool.isRequired,
   submitText: PropTypes.string.isRequired,
   submitForm: PropTypes.func.isRequired,

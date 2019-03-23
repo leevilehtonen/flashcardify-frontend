@@ -6,8 +6,11 @@ import DisplayCard from './DisplayCard';
 import InputCard from './InputCard';
 import CompletionDialog from '../../common/CompletionDialog';
 import PredictionStatus from './PredictionStatus';
-import { startQuiz, finishQuiz } from '../../../services/predict';
-import { addRating } from '../../../services/rating';
+import {
+  updateQuizSuccesses,
+  updateQuizTries,
+  createRatingForQuiz,
+} from '../../../services/quizzes';
 
 const styles = {
   root: {
@@ -57,7 +60,7 @@ const PredictPageContent = ({ quiz, classes, redirect }) => {
 
   const completionDialogTryAgain = () => {
     setCompletionDialogOpen(false);
-    startQuiz(quiz.id);
+    updateQuizTries(quiz.id);
     setTimeout(() => {
       setPredictionStatus(PredictionStatus.QUESTION);
       setQuestionNumber(0);
@@ -73,14 +76,14 @@ const PredictPageContent = ({ quiz, classes, redirect }) => {
       setPredictionStatus(PredictionStatus.ANSWER);
     } else if (isLastFlashcard()) {
       setCompletionDialogOpen(true);
-      finishQuiz(quiz.id);
+      updateQuizSuccesses(quiz.id);
     } else {
       nextFlashcard();
     }
   };
 
   const submitRating = async rating => {
-    await addRating(quiz.id, rating);
+    await createRatingForQuiz(quiz.id, rating);
   };
 
   return (

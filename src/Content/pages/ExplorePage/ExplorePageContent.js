@@ -54,6 +54,7 @@ const ExplorePageContent = ({
         next={fetchMoreQuizzes}
         hasMore={hasMoreQuizzes}
         scrollThreshold={0.95}
+        style={{ overflow: 'hidden' }}
         loader={
           <div className={classes.progress}>
             <CircularProgress />

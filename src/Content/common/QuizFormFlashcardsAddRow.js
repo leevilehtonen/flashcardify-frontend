@@ -25,7 +25,7 @@ const QuizFormFlashcardsAddRow = ({ classes, handleAddClick }) => {
 
   const addNewFlashcard = () => {
     if (newQuestion !== '' && newAnswer !== '') {
-      handleAddClick({ id: UUID(), question: newQuestion, answer: newAnswer });
+      handleAddClick({ newId: UUID(), question: newQuestion, answer: newAnswer });
       setNewQuestion('');
       setNewAnswer('');
       questionInput.current.focus();

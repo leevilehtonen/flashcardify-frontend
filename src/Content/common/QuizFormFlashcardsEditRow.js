@@ -12,17 +12,13 @@ const styles = () => ({
   },
 });
 
-const QuizFormFlashcardsEditRow = ({
-  classes,
-  flashcard: { question, answer },
-  handleSaveClick,
-}) => {
-  const [newQuestion, setNewQuestion] = useState(question);
-  const [newAnswer, setNewAnswer] = useState(answer);
+const QuizFormFlashcardsEditRow = ({ classes, flashcard, handleSaveClick }) => {
+  const [newQuestion, setNewQuestion] = useState(flashcard.question);
+  const [newAnswer, setNewAnswer] = useState(flashcard.answer);
 
   const updateFlashcard = () => {
     if (newQuestion !== '' && newAnswer !== '') {
-      handleSaveClick({ question: newQuestion, answer: newAnswer });
+      handleSaveClick(Object.assign({}, flashcard, { question: newQuestion, answer: newAnswer }));
       setNewQuestion('');
       setNewAnswer('');
     }

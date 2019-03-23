@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   TextField,
@@ -11,8 +11,14 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
+  ButtonBase,
+  Typography,
 } from '@material-ui/core';
 import Difficulty from '../../misc/Difficulty';
+import { importImages } from '../../misc/utils';
+import ImageDialog from './ImageDialog';
+
+const images = importImages();
 
 const styles = theme => ({
   root: {
@@ -25,6 +31,24 @@ const styles = theme => ({
   },
   textField: {
     width: '100%',
+  },
+  avatar: {
+    minWidth: '100px',
+    width: '10vw',
+    maxWidth: '200px',
+    marginRight: theme.spacing(2),
+    borderRadius: '4px',
+  },
+
+  avatarImage: {
+    width: '100%',
+    borderRadius: '4px',
+  },
+  avatarText: {
+    color: 'white',
+    position: 'absolute',
+    zIndex: 1,
+    textShadow: '0 0 100px black, 0 0 20px black',
   },
 });
 
@@ -39,7 +63,11 @@ const QuizFormDetails = ({
   setDifficulty,
   isPublic,
   setIsPublic,
+  image,
+  setImage,
 }) => {
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -61,8 +89,20 @@ const QuizFormDetails = ({
         }
       />
       <Divider />
+
       <List>
         <ListItem>
+          <ButtonBase className={classes.avatar} onClick={() => setImageDialogOpen(true)}>
+            <img
+              aria-label="icon"
+              src={images[image]}
+              className={classes.avatarImage}
+              alt={image}
+            />
+            <Typography variant="button" className={classes.avatarText}>
+              Select image
+            </Typography>
+          </ButtonBase>
           <TextField
             id="input-title"
             label="Title"
@@ -72,12 +112,18 @@ const QuizFormDetails = ({
             variant="outlined"
           />
         </ListItem>
+        <ImageDialog
+          open={imageDialogOpen}
+          setOpen={setImageDialogOpen}
+          images={images}
+          setImage={setImage}
+        />
         <ListItem>
           <TextField
             id="input-description"
             label="Description"
             multiline
-            rows="4"
+            rows="8"
             value={description}
             onChange={e => setDescription(e.target.value)}
             className={classes.textField}
@@ -122,6 +168,8 @@ QuizFormDetails.propTypes = {
   setDifficulty: PropTypes.func.isRequired,
   isPublic: PropTypes.bool.isRequired,
   setIsPublic: PropTypes.func.isRequired,
+  image: PropTypes.string.isRequired,
+  setImage: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(QuizFormDetails);

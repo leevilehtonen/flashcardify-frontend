@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Grow, Fade } from '@material-ui/core';
-import { getQuiz } from '../../../services/quizzes';
+import { getQuiz, getFlashcardsForQuiz } from '../../../services/quizzes';
 import FadeWrapperPage from '../../FadeWrapperPage';
 import EditPageContent from './EditPageContent';
 
@@ -10,8 +10,11 @@ const EditPage = ({ history, match }) => {
   const [quiz, setQuiz] = useState({});
 
   const fetchQuiz = async () => {
-    const result = await getQuiz(match.params.id, true);
-    setQuiz(result);
+    const result = await Promise.all([
+      getQuiz(match.params.id),
+      getFlashcardsForQuiz(match.params.id),
+    ]);
+    setQuiz({ ...result[0], flashcards: result[1] });
     setFetching(false);
   };
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Fade } from '@material-ui/core';
-import { getQuiz } from '../../../services/quizzes';
-import { startQuiz } from '../../../services/predict';
+import { getQuiz, updateQuizTries, getFlashcardsForQuiz } from '../../../services/quizzes';
 import FadeWrapperPage from '../../FadeWrapperPage';
 import PredictPageContent from './PredictPageContent';
 
@@ -11,9 +10,12 @@ const PredictPage = ({ match, history }) => {
   const [quiz, setQuiz] = useState({});
 
   const fetchQuiz = async () => {
-    const result = await getQuiz(match.params.id, true);
-    startQuiz(match.params.id);
-    setQuiz(result);
+    const result = await Promise.all([
+      getQuiz(match.params.id),
+      getFlashcardsForQuiz(match.params.id),
+      updateQuizTries(match.params.id),
+    ]);
+    setQuiz({ ...result[0], flashcards: result[1] });
     setFetching(false);
   };
 
