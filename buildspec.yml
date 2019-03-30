@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - cd $CODEBUILD_SRC_DIR
+      - npm install
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the React application
+      - npm run build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - BUILD_TIMESTAMP = date +"%Y%m%d%H%M%S"
+      - zip -r build_$BUILD_TIMESTAMP.zip build
+artifacts:
+  files:
+    - build_$BUILD_TIMESTAMP.zip
