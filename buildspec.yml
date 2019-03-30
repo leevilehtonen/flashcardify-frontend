@@ -16,8 +16,6 @@ phases:
     commands:
       - echo Build completed on `date`
       - BUILD_TIMESTAMP=`date +"%Y%m%d%H%M%S"`
-      - zip -r build.zip build
-      - zip -r coverage.zip coverage
 artifacts:
   files:
-    - ./build.zip
+    - ./build/*
