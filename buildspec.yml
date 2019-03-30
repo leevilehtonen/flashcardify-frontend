@@ -9,6 +9,9 @@ phases:
       - echo Build started on `date`
       - echo Building the React application
       - npm run build
+      - echo Test started on `date`
+      - echo Testing the React application
+      - npm run npm test -- --coverage
   post_build:
     commands:
       - echo Build completed on `date`
@@ -16,4 +19,4 @@ phases:
       - zip -r build_$BUILD_TIMESTAMP.zip build
 artifacts:
   files:
-    - build_$BUILD_TIMESTAMP.zip
+    - ./build_$BUILD_TIMESTAMP.zip
