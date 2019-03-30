@@ -12,7 +12,7 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - BUILD_TIMESTAMP = date +"%Y%m%d%H%M%S"
+      - BUILD_TIMESTAMP=`date +"%Y%m%d%H%M%S"`
       - zip -r build_$BUILD_TIMESTAMP.zip build
 artifacts:
   files:
