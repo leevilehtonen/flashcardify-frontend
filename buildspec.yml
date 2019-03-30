@@ -20,4 +20,4 @@ phases:
       - zip -r coverage.zip coverage
 artifacts:
   files:
-    - ./build
+    - ./build.zip
