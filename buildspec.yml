@@ -18,5 +18,5 @@ phases:
       - BUILD_TIMESTAMP=`date +"%Y%m%d%H%M%S"`
 artifacts:
   files:
-    - ./build/*
+    - "**/*"
   base-directory: build
