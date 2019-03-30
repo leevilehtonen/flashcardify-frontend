@@ -11,7 +11,7 @@ phases:
       - npm run build
       - echo Test started on `date`
       - echo Testing the React application
-      - npm run npm test -- --coverage
+      - npm test -- --coverage
   post_build:
     commands:
       - echo Build completed on `date`
