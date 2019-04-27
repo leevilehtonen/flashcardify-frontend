@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL =
-  `http://${process.env.REACT_APP_QUIZ_API_URL}/api/quizzes` || 'http://localhost:3001/api/quizzes';
+  `https://${process.env.REACT_APP_QUIZ_API_URL}/api/quizzes` || 'http://localhost:3001/api/quizzes';
 
 export const getQuizzes = async page => {
   const results = await axios.get(`${API_URL}`, { params: { page } });
